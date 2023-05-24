@@ -11,6 +11,8 @@ struct InfoPanelUI: View {
     var scale: CGFloat
     var offset: CGSize
     
+    @State private var isInfoPanelVisible: Bool = false
+    
     var body: some View {
         HStack {
             // MARK - HITSPOT
@@ -18,6 +20,11 @@ struct InfoPanelUI: View {
                 .symbolRenderingMode(.hierarchical)
                 .resizable()
                 .frame(width: 30, height: 30)
+                .onLongPressGesture(minimumDuration: 1) {
+                    withAnimation(.easeOut) {
+                        isInfoPanelVisible.toggle()
+                    }
+                }
             
             Spacer()
            
@@ -40,6 +47,7 @@ struct InfoPanelUI: View {
             .background(.ultraThinMaterial)
             .cornerRadius(8)
             .frame(maxWidth: 420)
+            .opacity(isInfoPanelVisible ? 1 : 0)
         }
     }
 }
