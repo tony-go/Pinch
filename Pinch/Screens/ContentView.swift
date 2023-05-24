@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var isAnimating: Bool = false
     @State private var imageScale: CGFloat = 1
     @State private var imageOffset: CGSize = .zero
+    @State private var isDrawerOpen: Bool = false
     
     private func resetImageState() {
         return withAnimation(.spring()) {
@@ -77,11 +78,13 @@ struct ContentView: View {
                     isAnimating = true
                 }
             })
+            // MARK: - SCALE PANEL
             .overlay(
                 InfoPanelUI(scale: imageScale, offset: imageOffset)
                     .padding(.horizontal)
                     .padding(.top, 30)
                 , alignment: .top)
+            // MARK: - CONTROL VIEW
             .overlay(
                 Group {
                     HStack {
@@ -123,6 +126,31 @@ struct ContentView: View {
                 } //: Group
                 .padding(.bottom, 30),
                 alignment: .bottom
+            )
+            // MARK: - DRAWER
+            .overlay(
+                HStack(spacing: 12) {
+                    Image(systemName: "chevron.compact.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 40)
+                        .padding(8)
+                        .foregroundStyle(.secondary)
+                        .onTapGesture{
+                            withAnimation(.easeOut) {
+                                isDrawerOpen.toggle()
+                            }
+                        }
+                    Spacer()
+                } //: Hstack
+                    .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 8))
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(12)
+                    .opacity(isAnimating ? 1 : 0)
+                    .frame(width: 240)
+                    .padding(.top, UIScreen.main.bounds.height / 12)
+                    .offset(x: isDrawerOpen ? 20: 200)
+                , alignment: .topTrailing
             )
             
         } //: Navigation
