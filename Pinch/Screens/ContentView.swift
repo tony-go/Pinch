@@ -93,46 +93,29 @@ struct ContentView: View {
                 , alignment: .top)
             // MARK: - CONTROL VIEW
             .overlay(
-                Group {
-                    HStack {
-                        Button {
-                            withAnimation(.easeOut) {
-                                if imageScale > 1 {
-                                    imageScale -= 1
-                                
-                                    if imageScale <= 1 {
-                                        resetImageState()
-                                    }
-                                }
-                            }
-                        } label: {
-                            ControlImageView(icon: "minus.magnifyingglass")
-                        }
-                        
-                        
-                        Button {
-                            resetImageState()
-                        } label: {
-                            ControlImageView(icon: "arrow.up.left.and.down.right.magnifyingglass")
-                        }
+                VStack {
+                    Spacer()
                     
-                        Button {
-                            withAnimation(.easeIn) {
-                                if imageScale < 5 {
-                                    imageScale += 1
+                    ControlButtonsView(decreaseAction: {
+                        withAnimation(.easeOut) {
+                            if imageScale > 1 {
+                                imageScale -= 1
+                                
+                                if imageScale <= 1 {
+                                    resetImageState()
                                 }
                             }
-                        } label: {
-                            ControlImageView(icon: "plus.magnifyingglass")
                         }
-                   } //: HStack
-                    .padding(EdgeInsets(top: 12, leading: 20, bottom: 12, trailing: 20))
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(12)
-                    .opacity(isAnimating ? 1 : 0)
-                } //: Group
-                .padding(.bottom, 30),
-                alignment: .bottom
+                    }, resetAction: {
+                        resetImageState()
+                    }, increaseAction: {
+                        withAnimation(.easeIn) {
+                            if imageScale < 5 {
+                                imageScale += 1
+                            }
+                        }
+                    })
+                }
             )
             // MARK: - DRAWER
             .overlay(
